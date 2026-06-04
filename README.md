@@ -12,7 +12,6 @@ red / blue 2 チームに対応。
 ### 1 tick 内 複数のプレーヤーが体力変動した場合
 
 稀だが、実行順で最後に処理されたプレイヤーの体力が `sharedHealth` になる。
-回復かダメージ食らうか判別できない。
 
 ### scoreboard 一覧
 
@@ -29,6 +28,7 @@ red / blue 2 チームに対応。
 | `usedGoldenApple` | `minecraft.used:golden_apple` | 金リンゴ使用 |
 | `usedEnchantedGoldenApple` | `minecraft.used:enchanted_golden_apple` | エンチャント金リンゴ使用 |
 | `usedTotemOfUndying` | `minecraft.used:totem_of_undying` | 不死のトーテム使用 |
+| `logTrigger` | `dummy` | tick log 一回限りトリガー |
 
 ### function 構成
 
@@ -48,8 +48,10 @@ function/
 ├── heal/
 │   ├── apply_heal.mcfunction
 │   └── do_heal.mcfunction
-└── effects/
-    └── share_effects.mcfunction
+├── effects/
+│   └── share_effects.mcfunction
+└── debug/
+    └── reset.mcfunction
 ```
 
 \#ふじにゃま

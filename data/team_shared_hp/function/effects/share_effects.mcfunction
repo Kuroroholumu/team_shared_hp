@@ -21,7 +21,7 @@ $execute if entity @a[team=$(team),scores={usedEnchantedGoldenApple=1..}] run ef
 $scoreboard players reset @a[team=$(team)] usedEnchantedGoldenApple
 
 # 不死のトーテム
-#   トーテム発動 -> HP=1 -> #SH=1 -> チーム全員HP=1
+#   トーテム発動 -> HP=1 -> .teamHP=1 -> チーム全員 HP=1
 
 # 衝撃吸収 II 5秒
 $execute if entity @a[team=$(team),scores={usedTotemOfUndying=1..}] run effect give @a[team=$(team)] absorption 5 1

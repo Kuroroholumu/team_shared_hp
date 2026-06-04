@@ -1,22 +1,19 @@
 # === 前処理 ===
 
 # 全プレイヤーの現在体力をNBTからスコアボードにコピー
-# gethealth は Health を 10 倍して保存する (例: 19.5 -> 195, 20.0 -> 200) 
+#   gethealth は Health を 10 倍して保存する (例: 19.5 -> 195, 20.0 -> 200)
 
 execute as @a run function team_shared_hp:core/gethealth
 
 # 初参加プレイヤー (firstJoinの値が1ではない) に leftGame=1 を設定
-#
-#   理由: 初参加プレイヤーが自分の体力を #SH に上書きするのを防ぐ
-#        (ログイン直後のHPでチーム共有値が書き換えられないようにするため) 
-#
-#         leftGame=1 の間は process_team 内で canChangeHealth タグが付与されず、
-#         #SH への書き込みが遮断される (チームからの同期は受ける) 
+
+#   理由: 初参加プレイヤーが自分の体力を .teamHP に上書きするのを防ぐ (ログイン直後のHPでチーム共有値が書き換えられないようにするため)
+#         leftGame=1 の間は process_team 内で canChangeHealth タグが付与されず、.teamHP への書き込みが遮断される (チームからの同期は受ける)
 
 execute as @a unless score @s firstJoin matches 1.. run scoreboard players set @s leftGame 1
 
-# 全プレイヤーにfirstJoin=1を付与 (次tickからは初参加ではなくなる) 
-# これにより次tickではleftGame=1に設定されず、#SH 同期に参加できる
+# 全プレイヤーに firstJoin=1 を付与 (次tickからは初参加ではなくなる)
+#   これにより next tick では leftGame=1 に設定されず、.teamHP 同期に参加できる
 
 scoreboard players set @a firstJoin 1
 
@@ -28,4 +25,7 @@ scoreboard players set @a firstJoin 1
 execute as @a run attribute @s minecraft:max_health base set 20
 
 # awaitingRespawn 初期化
+#   ここは add 、reset はだめ
+#   reset はすでに team_shared_hp:core/process_team 内処理済み
+
 scoreboard players add @a awaitingRespawn 0

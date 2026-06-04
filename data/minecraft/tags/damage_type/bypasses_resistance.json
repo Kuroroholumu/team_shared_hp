@@ -2,6 +2,6 @@
     "values": [
         "minecraft:generic",
         "minecraft:generic_kill",
-        "team_shared_hp:health_link"
+        "team_shared_hp:damage_linked"
     ]
 }

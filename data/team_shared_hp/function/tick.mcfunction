@@ -21,3 +21,10 @@ function team_shared_hp:core/process_team {team: "blue"}
 #   一時タグの削除
 
 function team_shared_hp:core/cleanup
+
+# ======
+execute if score #DEBUG logTrigger matches 1 run say tick OK
+# ======
+
+# Turn off
+scoreboard players set #DEBUG logTrigger 0

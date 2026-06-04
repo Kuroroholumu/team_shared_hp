@@ -8,7 +8,7 @@ scoreboard players operation @s healthDifference = @s health
 # ダメージのを計算
 #   healthDifference = healthDifference - sharedHealth
 
-$scoreboard players operation @s healthDifference -= #SH_$(team) sharedHealth
+$scoreboard players operation @s healthDifference -= .teamHP_$(team) sharedHealth
 
 # スコアボードの値を実ダメージ量に変換して team_shared_hp:temp に格納
 #    double 0.1 -> スコア値を 0.1 倍して double 型として保存 (例: 5 -> 0.5d )
