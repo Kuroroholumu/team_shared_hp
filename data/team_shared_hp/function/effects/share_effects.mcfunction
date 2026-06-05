@@ -7,7 +7,7 @@
 # 衝撃吸収 I 120秒
 $execute if entity @a[team=$(team),scores={usedGoldenApple=1..}] run effect give @a[team=$(team)] absorption 120 0
 # リセット
-$scoreboard players reset @a[team=$(team)] usedGoldenApple
+$execute if entity @a[team=$(team),scores={usedGoldenApple=1..}] run scoreboard players reset @a[team=$(team)] usedGoldenApple
 
 # エンチャント金リンゴ
 
@@ -18,7 +18,7 @@ $execute if entity @a[team=$(team),scores={usedEnchantedGoldenApple=1..}] run ef
 # 耐性 300秒
 $execute if entity @a[team=$(team),scores={usedEnchantedGoldenApple=1..}] run effect give @a[team=$(team)] resistance 300
 # リセット
-$scoreboard players reset @a[team=$(team)] usedEnchantedGoldenApple
+$execute if entity @a[team=$(team),scores={usedEnchantedGoldenApple=1..}] run scoreboard players reset @a[team=$(team)] usedEnchantedGoldenApple
 
 # 不死のトーテム
 #   トーテム発動 -> HP=1 -> .teamHP=1 -> チーム全員 HP=1
@@ -28,4 +28,4 @@ $execute if entity @a[team=$(team),scores={usedTotemOfUndying=1..}] run effect g
 # 耐火 40秒
 $execute if entity @a[team=$(team),scores={usedTotemOfUndying=1..}] run effect give @a[team=$(team)] fire_resistance 40
 # リセット
-$scoreboard players reset @a[team=$(team)] usedTotemOfUndying
+$execute if entity @a[team=$(team),scores={usedTotemOfUndying=1..}] run scoreboard players reset @a[team=$(team)] usedTotemOfUndying

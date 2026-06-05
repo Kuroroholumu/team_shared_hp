@@ -44,19 +44,12 @@ $execute if entity @a[team=$(team),scores={deathDetected=1..}] unless score #dea
 
 # ======
 
-# チーム初期化
-#   初回起動時のみ .teamHP = 200 (= 体力 20.0 × 10 ) に設定
+# チーム初期化 (初回起動時のみ)
 
 #   条件
 #      $(team) 内 #deathFlag_$(team) の firstJoin が 1 ではない
-#   結果
-#      $(team) 内 .teamHP_$(team) の sharedHealth が 200 になる (初期化)
 
-$execute unless score #deathFlag_$(team) firstJoin matches 1 run scoreboard players set .teamHP_$(team) sharedHealth 200
-
-#   初期化完了、 #deathFlag_$(team) の firstJoin が 1 に設定
-
-$scoreboard players set #deathFlag_$(team) firstJoin 1
+$execute unless score #deathFlag_$(team) firstJoin matches 1 run function team_shared_hp:core/teaminit {team: "$(team)"}
 
 # ======
 
@@ -93,15 +86,31 @@ $execute unless entity @a[team=$(team),scores={awaitingRespawn=..0}] run tag @a[
 
 $execute as @a[tag=canChangeHealth,team=$(team)] unless score @s health = .teamHP_$(team) sharedHealth run tag @s add changeHealth
 
-# 共有体力 .teamHP sharedHealth のアップデート
+# tick 内体力変動の定義
+
+#   チーム内各のプレーヤーが受けた回復量の中の最大値
+#       .maxHeal_$(team)
+#   チーム内各のプレーヤーが受けたダメージの中の最大値
+#       .maxDama_$(team)
+#
+#   体力変動 = .maxHeal_$(team) + .maxDama_$(team)
+
+$scoreboard players set .maxHeal_$(team) healthDifference 0
+$scoreboard players set .maxDama_$(team) healthDifference 0
+
+# 体力変動の処理
 
 #   ターゲット
 #       $(team) 内 changeHealth のプレーヤー
 #   結果
-#       このプレイヤーの体力 health で .teamHP の sharedHealth を上書き
-#       全滅イベント後最初にリスポーンしたプレイヤーもここで .teamHP を自分の体力に同期する
+#       team_shared_hp:core/getmax を呼び出す
 
-$execute as @a[tag=changeHealth,team=$(team)] run scoreboard players operation .teamHP_$(team) sharedHealth = @s health
+$execute as @a[tag=changeHealth,team=$(team)] run function team_shared_hp:core/getmax {team: "$(team)"}
+
+# 共有体力 .teamHP sharedHealth のアップデート
+
+$scoreboard players operation .teamHP_$(team) sharedHealth += .maxHeal_$(team) healthDifference
+$scoreboard players operation .teamHP_$(team) sharedHealth += .maxDama_$(team) healthDifference
 
 # チーム内体力同期化
 #    チーム全員に対して team_shared_hp:core/synchealth を実行

@@ -11,7 +11,13 @@ red / blue 2 チームに対応。
 
 ### 1 tick 内 複数のプレーヤーが体力変動した場合
 
-稀だが、実行順で最後に処理されたプレイヤーの体力が `sharedHealth` になる。
+各プレーヤーの体力変動 `Δᵢ = healthᵢ − sharedHealth` を集計する。
+`ΔHᵢ > 0` は回復、`ΔDᵢ < 0` はダメージ。
+
+- `maxHeal = max(0, ΔH₁, ..., ΔHₙ)` —— MAX体力回復：正の差分の最大値（回復がない場合は 0）
+- `maxDama = min(0, ΔD₁, ..., ΔDₙ)` —— MAXダメージ：負の差分の最小値（ダメージがない場合は 0）
+
+この tick 内チームの体力変動は `sharedHealth += maxHeal + maxDama` にする
 
 ### scoreboard 一覧
 
@@ -39,7 +45,9 @@ function/
 ├── core/
 │   ├── prep.mcfunction
 │   ├── gethealth.mcfunction
+│   ├── teaminit.mcfunction
 │   ├── process_team.mcfunction
+│   ├── getmax.mcfunction
 │   ├── synchealth.mcfunction
 │   └── cleanup.mcfunction
 ├── damage/

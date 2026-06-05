@@ -12,13 +12,13 @@ execute as @a run function team_shared_hp:core/gethealth
 
 execute as @a unless score @s firstJoin matches 1.. run scoreboard players set @s leftGame 1
 
-# 全プレイヤーに firstJoin=1 を付与 (次tickからは初参加ではなくなる)
+# 初参加プレイヤーに firstJoin=1 を付与 (次tickからは初参加ではなくなる)
 #   これにより next tick では leftGame=1 に設定されず、.teamHP 同期に参加できる
 
-scoreboard players set @a firstJoin 1
+execute as @a unless score @s firstJoin matches 1.. run scoreboard players set @s firstJoin 1
 
 # 全プレイヤーの最大体力を 20 にリセット
-#
+
 #   理由: 前tickの heal 同期 (do_heal) で max_health がチーム共有値 (例: 12.5) に変更されている可能性がある。
 #         毎tick 20 に戻す。プレーヤーの現在体力 (Health) は変更されない。
 
